@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.teamhenry.game.FlappyDemo;
+import com.teamhenry.game.Scenes.HUD;
 import com.teamhenry.game.sprites.Bird;
 import com.teamhenry.game.sprites.Tube;
 
@@ -18,7 +19,6 @@ public class PlayState extends State
 {
     private static final int TUBE_SPACING = 125;
     private static final int TUBE_COUNT = 4;
-
     private static final int GROUND_Y_OFFSET = -50;
 
     private Bird bird;
@@ -29,9 +29,11 @@ public class PlayState extends State
     private Texture ground;
     private Vector2 groundPos1, groundPos2;
 
+    private HUD hud;
+
     BitmapFont font;
 
-    public Integer score;
+    //public Integer score;
 
     protected PlayState(GameStateManager gsm)
     {
@@ -39,6 +41,8 @@ public class PlayState extends State
 
         bird = new Bird(75, 300);
         cam.setToOrtho(false, FlappyDemo.WIDTH/2, FlappyDemo.HEIGHT/2);
+
+        hud = new HUD();
 
         bg = new Texture("bg.png");
 
@@ -51,8 +55,6 @@ public class PlayState extends State
             tubes.add(new Tube(i * (TUBE_SPACING + Tube.TUBE_WIDTH)));
 
         font = new BitmapFont();
-
-        score = -1;
     }
 
     @Override
@@ -81,13 +83,18 @@ public class PlayState extends State
             }
 
             if (tube.checkPass(bird.getBounds()))
-                score++;
+            {
+                //score++;
+                hud.updateScore();
+            }
+
+
             if (tube.collides(bird.getBounds()))
-                gsm.set(new MenuState(gsm, score));
+                gsm.set(new MenuState(gsm, hud.getScore()));
         }
 
         if (bird.getPosition().y <= ground.getHeight() + GROUND_Y_OFFSET)
-            gsm.set(new MenuState(gsm, score));
+            gsm.set(new MenuState(gsm, hud.getScore()));
 
         cam.update();
     }
@@ -101,8 +108,7 @@ public class PlayState extends State
     }
 
     @Override
-    public void render(SpriteBatch sb)
-    {
+    public void render(SpriteBatch sb) {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
 
@@ -118,7 +124,10 @@ public class PlayState extends State
         sb.draw(ground, groundPos1.x, groundPos1.y);
         sb.draw(ground, groundPos2.x, groundPos2.y);
 
-        font.draw(sb, score.toString(), cam.position.x + cam.viewportWidth/2 - 30, cam.position.y * 2);
+        //font.draw(sb, score.toString(), cam.position.x + cam.viewportWidth/2 - 30, cam.position.y * 2);
+
+        sb.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.draw();
 
         sb.end();
     }
