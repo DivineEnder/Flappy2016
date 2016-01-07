@@ -53,6 +53,12 @@ public class HUD implements Disposable{
         return score;
     }
 
+    public void setScore(int score){
+        this.score = score;
+        scoreLabel.setText(String.format("%d", score));
+
+    }
+
     @Override
     public void dispose() {
         stage.dispose();

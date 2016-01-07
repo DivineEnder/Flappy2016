@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.teamhenry.game.FlappyDemo;
+import com.teamhenry.game.Scenes.HUD;
 
 /**
  * Created by Ender on 1/3/2016.
@@ -19,6 +20,8 @@ public class MenuState extends State
     private BitmapFont font;
     private Integer score;
 
+    private HUD hud;
+
     public MenuState(GameStateManager gsm, int score)
     {
         super(gsm);
@@ -29,6 +32,10 @@ public class MenuState extends State
         playBtn = new Texture("playbtn.png");
 
         font = new BitmapFont();
+
+        hud = new HUD();
+        hud.setScore(score);
+
         this.score = score;
     }
 
@@ -55,7 +62,7 @@ public class MenuState extends State
         sb.draw(playBtn, cam.position.x - (playBtn.getWidth() / 2), cam.position.y);
 
         font.setColor(Color.BLACK);
-        font.draw(sb, score.toString(), cam.position.x, cam.viewportHeight);
+        hud.stage.draw();
 
         sb.end();
     }

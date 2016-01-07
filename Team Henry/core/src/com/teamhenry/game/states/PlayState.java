@@ -33,8 +33,6 @@ public class PlayState extends State
 
     BitmapFont font;
 
-    //public Integer score;
-
     protected PlayState(GameStateManager gsm)
     {
         super(gsm);
@@ -84,7 +82,6 @@ public class PlayState extends State
 
             if (tube.checkPass(bird.getBounds()))
             {
-                //score++;
                 hud.updateScore();
             }
 
@@ -123,8 +120,6 @@ public class PlayState extends State
 
         sb.draw(ground, groundPos1.x, groundPos1.y);
         sb.draw(ground, groundPos2.x, groundPos2.y);
-
-        //font.draw(sb, score.toString(), cam.position.x + cam.viewportWidth/2 - 30, cam.position.y * 2);
 
         sb.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
