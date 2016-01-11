@@ -16,15 +16,18 @@ import com.teamhenry.game.FlappyDemo;
 /**
  * Created by edwardszc on 1/5/16.
  */
-public class HUD implements Disposable{
+public class HUD implements Disposable
+{
     public Stage stage;
     private Viewport viewport;
 
     private static Integer score;
     private static Label scoreLabel;
 
-    public HUD(){
+    public HUD()
+    {
         score = -1;
+
         Table table = new Table();
         table.top();
         table.setFillParent(true);
@@ -32,32 +35,31 @@ public class HUD implements Disposable{
         //viewport = new ScreenViewport(FlappyDemo.WIDTH, FlappyDemo.HEIGHT, new OrthographicCamera());
         viewport = new ScreenViewport(new OrthographicCamera());
 
-
-        scoreLabel = new Label(String.format("%d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        scoreLabel = new Label(String.format("%d", score), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         stage = new Stage(viewport);
 
         table.add(scoreLabel).expandX().padTop(10);
         // You can use table.row(); to create a new row
 
-
         stage.addActor(table);
-
     }
 
-    public static void updateScore() {
+    //Increases score and updates text on hud
+    public static void updateScore()
+    {
         score++;
         scoreLabel.setText(String.format("%d", score));
     }
 
-    public Integer getScore(){
-        return score;
-    }
-
-    public void setScore(int score){
+    //Sets score to passed value and updates text on hud
+    public void setScore(int score)
+    {
         this.score = score;
         scoreLabel.setText(String.format("%d", score));
 
     }
+
+    public Integer getScore() { return score; }
 
     @Override
     public void dispose() {

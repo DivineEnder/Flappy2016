@@ -14,34 +14,34 @@ import com.teamhenry.game.Scenes.HUD;
  */
 public class MenuState extends State
 {
+    //Textures for menu sprites
     private Texture background;
     private Texture playBtn;
 
-    private BitmapFont font;
-    private Integer score;
-
+    //Heads up display for high score
     private HUD hud;
 
-    public MenuState(GameStateManager gsm, int score)
+    public MenuState(GameStateManager gsm)
     {
         super(gsm);
 
+        //Setting camera view (causing issue with play button currently)
         cam.setToOrtho(false, FlappyDemo.WIDTH / 2, FlappyDemo.HEIGHT / 2);
 
+        //Getting textures from file
         background = new Texture("bg.png");
         playBtn = new Texture("playbtn.png");
 
-        font = new BitmapFont();
-
+        //Creating hud
         hud = new HUD();
-        hud.setScore(score);
-
-        this.score = score;
+        //Setting hud display to global high score
+        hud.setScore((Integer) gsm.getGlobal("High Score").getVar());
     }
 
     @Override
     public void handleInput()
     {
+        //Starts the game when touched (mouse click or actual touch)
         if (Gdx.input.justTouched())
             gsm.set(new PlayState(gsm));
     }
@@ -55,13 +55,16 @@ public class MenuState extends State
     @Override
     public void render(SpriteBatch sb)
     {
+        //Sets drawing realtive to camera
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
 
+        //Draws background
         sb.draw(background, 0, 0);
+        //Draws play button (current either offscreen or not drawing correct)
         sb.draw(playBtn, cam.position.x - (playBtn.getWidth() / 2), cam.position.y);
 
-        font.setColor(Color.BLACK);
+        //Draws hud
         hud.stage.draw();
 
         sb.end();
